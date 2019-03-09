@@ -1,0 +1,10 @@
+*.cachefile
+*.user
+*.db
+*.suo
+*.xnb
+*.pdb
+
+/bin
+/Properties
+/obj
