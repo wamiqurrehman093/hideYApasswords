@@ -4,6 +4,8 @@
 *.suo
 *.xnb
 *.pdb
+*.sln
+
 
 /bin
 /Properties
