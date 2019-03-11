@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace encryterConsole 
 {
@@ -86,41 +87,31 @@ namespace encryterConsole
             enkey.Add('@', '&');
             enkey.Add('_', '8');
             enkey.Add('.', 'M');
+
+            Console.WriteLine("Enter file directory e.g \" C:\\ \"" );
+            string filename="encryptedCode";
+            string dir =fileDirectorysaver(filename);
+            Console.Clear();
+
             
-            string filename = @"D:\encryptedCode.txt";
-            
+
             Console.WriteLine("Press \" e \" if you wanna Enter Email and Password :");
-            
-            Console.WriteLine();
-            
+            Console.WriteLine();   
             Console.WriteLine("Press \" d \" if you wana Decrypt the Password :");
              
             string decision = Console.ReadLine();
 
             if (decision == "e" || decision == "E")
             {
-                encrypt s = new encrypt();
-                Console.WriteLine("User chose to enter data......");
-                Console.WriteLine();
-                
-
-                Console.WriteLine("Enter email :");
-                string email = Console.ReadLine();
-
-                Console.WriteLine("Enter password :");
-                string password = Console.ReadLine();
-
-
-                string a = s.funcEncrypt(password, enkey);
-                s.saveEncrypt(email, a, filename);
+                decionEncrypt(dir, enkey);
             }
 
             else if (decision == "d" || decision == "D")
             {
                 decrypt c = new decrypt();
                 Console.WriteLine("You need a 3 digit Passcode to decrypt");
-            s: Console.WriteLine("So...");
-            int count = 1;
+            s:  Console.WriteLine("So...");
+                int count = 1;
                 Console.WriteLine("press \"y\" if u have the Passcode press \"n\" if you dont have the code :");
                 count++;
                 if (count == 3)
@@ -129,11 +120,10 @@ namespace encryterConsole
                 }
                 else
                 {
-
                     string yn = Console.ReadLine();
                     if (yn == "y")
                     {
-                        const string passCode = "098";
+                        
 
                         Console.WriteLine("Enter passcode :");
                         string userPasscode = Console.ReadLine();
@@ -180,6 +170,32 @@ namespace encryterConsole
                 Thread.Sleep(1000);
             }
         }
+        static string fileDirectorysaver( string filename)
+        {
+            string directory =@Console.ReadLine();
+           bool directoryFound = Directory.Exists(directory);
+            return Path.Combine(directory, filename +".txt" );
+        }
 
+        static void decionEncrypt(string dir, Dictionary<char, char> enkey)
+        {
+            encrypt s = new encrypt();
+            Console.WriteLine("User chose to enter data......");
+            Console.WriteLine();
+
+
+            Console.WriteLine("Enter email :");
+            string email = Console.ReadLine();
+
+            Console.WriteLine("Enter password :");
+            string password = Console.ReadLine();
+
+
+            string a = s.funcEncrypt(password, enkey);
+            s.saveEncrypt(email, a, dir);
+        }
+
+      
+        
     }
 }
