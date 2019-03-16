@@ -12,7 +12,7 @@ if another user opens the txt file.
 
 * **Used LINQ** to search in dictionary for decrypting or encrypting 
 
+**Default txt file directory is " D:/ "** , can be changed in Program.cs class
 
-passcode is 098 
-
-you can change the passcode, that is in Program.cs. 
+**Update :**
+* User can now set 3 digit passcode to access decrypter.
