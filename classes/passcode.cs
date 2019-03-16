@@ -3,24 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.IO;
 namespace encryterConsole.classes
 {
-    class passcode
+   public class passcode
     {
-
-        static void savePasscode(string passcode, Dictionary<char, char> passKey, string dir)
+      
+        public void savePasscode(string passcode, Dictionary<char, char> passKey, string dir)
         {
             encrypt code = new encrypt();
             string encPasscode = code.funcEncrypt(passcode, passKey);
-            code.saveEncrypt("Passcode", passcode, dir);
+            code.saveEncrypt("Passcode", encPasscode, dir);
         }
-
-        static bool passcodeINfile(string dir)
+        public  string decryptPasscode(string passcode, Dictionary<char, char> passKey)
         {
-            return Regex.IsMatch(dir,@"^Passcode \: \d{3}");
-
+            string decPasscode = "";
+            decrypt code = new decrypt();
+            return decPasscode = code.funcDecrypt(passcode, passKey);
         }
-        static string enterPasscode()
+
+        public  bool passcodeINfile(string dir)
+        {
+            StreamReader reader = new StreamReader(dir);
+            Regex reg = new Regex(@"^passcode \: \w {3}$");
+            string line=reader.ReadLine();
+            Match passcodeMatch = reg.Match(line);
+            return (passcodeMatch.Success);
+            
+        }
+        public  string enterPasscode()
         {
             string pass;
             do
@@ -33,5 +44,20 @@ namespace encryterConsole.classes
             } while (pass.Length >= 4);
             return pass;
         }
+        public  string fetchPasscodeFromDirectory(string dir)
+        {
+            string passCode="";
+            StreamReader reader = new StreamReader(dir);
+            string line=reader.ReadLine();
+            foreach (var s in Regex.Split(line, @"Passcode : "))
+            {
+               passCode = passCode + s;
+            }
+               
+           
+            return passCode;
+
+        }
+
     }
 }

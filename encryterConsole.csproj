@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="classes\decrypt.cs" />
     <Compile Include="classes\encrypt.cs" />
+    <Compile Include="classes\passcode.cs" />
     <Compile Include="classes\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

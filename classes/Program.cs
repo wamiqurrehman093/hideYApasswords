@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Text.RegularExpressions;
+using encryterConsole.classes;
 
 namespace encryterConsole 
 {
@@ -13,8 +14,8 @@ namespace encryterConsole
     {
         static void Main(string[] args)
         {
-            Dictionary<char, char> enkey = new Dictionary<char, char>();
-
+           Dictionary<char, char> enkey = new Dictionary<char, char>();
+            
             enkey.Add('q', 'Z');
             enkey.Add('w', 'X');
             enkey.Add('e', 'C');
@@ -87,11 +88,22 @@ namespace encryterConsole
             enkey.Add('@', '&');
             enkey.Add('_', '8');
             enkey.Add('.', 'M');
+            passcode _passcodeObj = new passcode();
 
-            Console.WriteLine("Enter file directory e.g \" C:\\ \"" );
-            string filename="encryptedCode";
-            string dir =fileDirectorysaver(filename);
-            Console.Clear();
+
+
+            string filename = @"D:\encryptedCode.txt";
+
+            if (File.Exists(filename)==false)
+            {
+                string Passcode=  _passcodeObj.enterPasscode();
+               _passcodeObj.savePasscode(Passcode, enkey, filename);
+            }
+               
+     
+               Console.Clear();
+	        
+           
 
             
 
@@ -103,14 +115,15 @@ namespace encryterConsole
 
             if (decision == "e" || decision == "E")
             {
-                decionEncrypt(dir, enkey);
+                decionEncrypt(filename, enkey);
             }
 
             else if (decision == "d" || decision == "D")
             {
-                decrypt c = new decrypt();
-                Console.WriteLine("You need a 3 digit Passcode to decrypt");
-            s:  Console.WriteLine("So...");
+                decrypt _decryptObj = new decrypt();
+                
+            s: 
+
                 int count = 1;
                 Console.WriteLine("press \"y\" if u have the Passcode press \"n\" if you dont have the code :");
                 count++;
@@ -123,24 +136,21 @@ namespace encryterConsole
                     string yn = Console.ReadLine();
                     if (yn == "y")
                     {
-                        
-
-                        Console.WriteLine("Enter passcode :");
-                        string userPasscode = Console.ReadLine();
-
-                        if (userPasscode == passCode)
+                         string EnteredPasscode= _passcodeObj.enterPasscode();
+                         string decyptedPasscode = _passcodeObj.decryptPasscode(_passcodeObj.fetchPasscodeFromDirectory(filename), enkey);
+                         if (EnteredPasscode == decyptedPasscode)
                         {
                             Console.WriteLine();
                             Console.WriteLine("Enter Encrypted Password :");
 
                             string userPassword = Console.ReadLine();
-                            string res = c.funcDecrypt(userPassword, enkey);
+                            string res = _decryptObj.funcDecrypt(userPassword, enkey);
 
                             Console.WriteLine();
                             Console.WriteLine("Decrypted Pasword : \" {0} \" ", res);
                             Console.ReadLine();
                         }
-                        else if (userPasscode != passCode)
+                         else if (EnteredPasscode != decyptedPasscode)
                         {
                             Console.Write("Invalid Passcode...");
                             goto s;
@@ -170,13 +180,7 @@ namespace encryterConsole
                 Thread.Sleep(1000);
             }
         }
-        static string fileDirectorysaver( string filename)
-        {
-            string directory =@Console.ReadLine();
-           bool directoryFound = Directory.Exists(directory);
-            return Path.Combine(directory, filename +".txt" );
-        }
-
+       
         static void decionEncrypt(string dir, Dictionary<char, char> enkey)
         {
             encrypt s = new encrypt();

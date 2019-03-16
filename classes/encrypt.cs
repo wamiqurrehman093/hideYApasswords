@@ -22,11 +22,14 @@ namespace encryterConsole
                
             }
            
+            
+            
             return retEncrypt;
         }
 
         public void saveEncrypt(string email, string code, string filepath)
-        {
+        
+       {
             StreamWriter h = new StreamWriter(filepath, true);
             h.WriteLine(email + " :  " + code);
             h.Close();
