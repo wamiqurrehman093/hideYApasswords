@@ -1,7 +1,7 @@
 ## **hideYApasswords**
 ## console application C#
 
-**Save your Emails and Passwords*(encrypted)* on a txt file and decrypt passwords when needed**
+**Save your Emails and Passwords *(encrypted)* on a txt file and decrypt passwords when needed**
 
 
 Made this program so that it'll be easier for me to remember the passwords by saving the passwords with some security
