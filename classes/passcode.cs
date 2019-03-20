@@ -59,5 +59,27 @@ namespace encryterConsole.classes
 
         }
 
+        public string fetchPasswordFromDirectory(string dir, string email)
+        {
+            string passWord = "";
+            StreamReader reader = new StreamReader(dir);
+            Regex reg = new Regex(email + @".+$");
+            string line = reader.ReadToEnd();
+            Match emailMatch = reg.Match(line);
+            if (emailMatch.Success)
+            {
+                string Fetchemail = emailMatch.ToString();
+                foreach (var s in Regex.Split(Fetchemail, @"^.+\@\w+\.com : "))
+                {
+                    passWord = passWord + s;
+                }
+
+            }
+            else
+                passWord = "No match for email";
+            return passWord;
+
+        }
+
     }
 }
