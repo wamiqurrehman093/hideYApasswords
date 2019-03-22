@@ -10,9 +10,12 @@ if another user opens the txt file.
 
 * **Used datastructure Dictionary<TKey, TValue>** to save every alphabetical and numeric character's key. 
 
-* **Used LINQ** to search in dictionary for decrypting or encrypting 
+* **Used LINQ** to search in dictionary for decrypting or encrypting. 
+
+* **Used REGEX** to fetch Encrypted Password from the txt file.
 
 **Default txt file directory is " D:/ "** , can be changed in Program.cs class
 
 **Update :**
 * User can now set 3 digit passcode to access decrypter.
+* User can now access password directly via entering email. 

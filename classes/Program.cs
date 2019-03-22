@@ -14,8 +14,8 @@ namespace encryterConsole
     {
         static void Main(string[] args)
         {
-           Dictionary<char, char> enkey = new Dictionary<char, char>();
-            
+            Dictionary<char, char> enkey = new Dictionary<char, char>();
+
             enkey.Add('q', 'Z');
             enkey.Add('w', 'X');
             enkey.Add('e', 'C');
@@ -35,11 +35,11 @@ namespace encryterConsole
             enkey.Add('h', 'I');
             enkey.Add('j', 'O');
             enkey.Add('k', 'P');
-         
+
             enkey.Add('l', '@');
             enkey.Add('z', '-');
             enkey.Add('x', '_');
-         
+
             enkey.Add('c', '7');
             enkey.Add('v', '2');
             enkey.Add('b', '3');
@@ -76,11 +76,11 @@ namespace encryterConsole
             enkey.Add('1', 'L');
             enkey.Add('2', 'K');
             enkey.Add('3', 'J');
-            enkey.Add('4', 'H'); 
+            enkey.Add('4', 'H');
             enkey.Add('5', 'G');
             enkey.Add('6', 'F');
             enkey.Add('7', 'D');
-            enkey.Add('8', 'S'); 
+            enkey.Add('8', 'S');
             enkey.Add('9', 'A');
             enkey.Add('0', '1');
 
@@ -89,89 +89,80 @@ namespace encryterConsole
             enkey.Add('_', '8');
             enkey.Add('.', 'M');
             passcode _passcodeObj = new passcode();
-
-
+            encrypt _encryptObj = new encrypt();
+            decrypt _decryptObj = new decrypt();
 
             string filename = @"D:\encryptedCode.txt";
 
-            if (File.Exists(filename)==false)
+            if (File.Exists(filename) == false)
             {
-                string Passcode=  _passcodeObj.enterPasscode();
-               _passcodeObj.savePasscode(Passcode, enkey, filename);
-            }
-               
-     
-               Console.Clear();
-	        
-           
+                string Passcode = _passcodeObj.enterPasscode();
+                _passcodeObj.savePasscode(Passcode, enkey, filename);
 
-            
+            }
+
+
+            Console.Clear();
+
 
             Console.WriteLine("Press \" e \" if you wanna Enter Email and Password :");
-            Console.WriteLine();   
+            Console.WriteLine();
             Console.WriteLine("Press \" d \" if you wana Decrypt the Password :");
-             
-            string decision = Console.ReadLine();
 
-            if (decision == "e" || decision == "E")
+            string decisionEncrytOrDecrypt = Console.ReadLine();
+
+            if (decisionEncrytOrDecrypt == "e" || decisionEncrytOrDecrypt == "E")
             {
                 decionEncrypt(filename, enkey);
             }
 
-            else if (decision == "d" || decision == "D")
+            if (decisionEncrytOrDecrypt == "d" || decisionEncrytOrDecrypt == "D")
             {
-                decrypt _decryptObj = new decrypt();
-                
-            s: 
-
-                int count = 1;
-                Console.WriteLine("press \"y\" if u have the Passcode press \"n\" if you dont have the code :");
-                count++;
-                if (count == 3)
+                string EnteredPasscode = _passcodeObj.enterPasscode();
+                string decyptedPasscode = _passcodeObj.decryptPasscode(_passcodeObj.fetchPasscodeFromDirectory(filename), enkey);
+                if (EnteredPasscode == decyptedPasscode)
                 {
-                    bye();
-                }
-                else
-                {
-                    string yn = Console.ReadLine();
-                    if (yn == "y")
+                    Console.WriteLine();
+                    Console.WriteLine("Enter Encrypted Password  OR Enter email to access Password\n\n");
+                    Console.WriteLine("enter \" e \" IF you want to write email to directly access password\nOR\nenter \" v \" IF you have the encrypted password from text file");
+                    string choice = Console.ReadLine();
+                    if (choice == "e")
                     {
-                         string EnteredPasscode= _passcodeObj.enterPasscode();
-                         string decyptedPasscode = _passcodeObj.decryptPasscode(_passcodeObj.fetchPasscodeFromDirectory(filename), enkey);
-                         if (EnteredPasscode == decyptedPasscode)
+                        Console.WriteLine("Enter email to access password");
+                        string Useremail = Console.ReadLine();
+
+                        string encryptedPassword = _passcodeObj.fetchPasswordFromDirectory(filename, Useremail);
+                        if (encryptedPassword != "No match for email")
                         {
-                            Console.WriteLine();
-                            Console.WriteLine("Enter Encrypted Password :");
-
-                            string userPassword = Console.ReadLine();
-                            string res = _decryptObj.funcDecrypt(userPassword, enkey);
-
-                            Console.WriteLine();
-                            Console.WriteLine("Decrypted Pasword : \" {0} \" ", res);
+                            string decryptedPassword = _decryptObj.funcDecrypt(encryptedPassword, enkey);
+                            Console.WriteLine("Decrypted Pasword : \" {0} \" ",decryptedPassword);
                             Console.ReadLine();
                         }
-                         else if (EnteredPasscode != decyptedPasscode)
-                        {
-                            Console.Write("Invalid Passcode...");
-                            goto s;
-                        }
+                        else
+                            bye();
+
                     }
-                    else if (yn == "n" || yn != "y")
+                    else
                     {
+                        Console.WriteLine("Enter Encrypted Password to access password");
+                        string userPassword = Console.ReadLine();
+                        string res = _decryptObj.funcDecrypt(userPassword, enkey);
                         Console.WriteLine();
-
-                        bye();
-
+                        Console.WriteLine("Decrypted Pasword : \" {0} \" ", res);
+                        Console.ReadLine();
                     }
                 }
-
+                else if (EnteredPasscode != decyptedPasscode)
+                {
+                    Console.Write("Invalid Passcode...");
+                    bye();
+                }
+                
+                
             }
-            else
-            {
-                bye();
-            }
-           
         }
+
+
         static void bye()
         {
             for (int i = 0; i < 1; i++)
@@ -180,10 +171,9 @@ namespace encryterConsole
                 Thread.Sleep(1000);
             }
         }
-       
+
         static void decionEncrypt(string dir, Dictionary<char, char> enkey)
         {
-            encrypt s = new encrypt();
             Console.WriteLine("User chose to enter data......");
             Console.WriteLine();
 
@@ -194,11 +184,13 @@ namespace encryterConsole
             Console.WriteLine("Enter password :");
             string password = Console.ReadLine();
 
-
-            string a = s.funcEncrypt(password, enkey);
-            s.saveEncrypt(email, a, dir);
+            encrypt _encrytObj = new encrypt();
+            string encryptedText = _encrytObj.funcEncrypt(password, enkey);
+            _encrytObj.saveEncrypt(email, encryptedText, dir);
         }
-
+        
+          
+        
       
         
     }
